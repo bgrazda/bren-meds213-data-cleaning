@@ -1,0 +1,182 @@
+---
+title: "eds213_data_cleaning_assign_BrookeGrazda"
+author: "Brooke Grazda"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(here)
+```
+```{r}
+# file names
+
+datadir_raw <- "data/raw/"
+
+datadir_processed <- here("data", "processed/")
+
+species_file <- "species_presence.csv"
+
+snowsurvey_file <- "snow_cover.csv"
+
+raw_snow_survey_file <- "ASDN_Snow_survey.csv"
+```
+
+
+
+Import the snow survey
+
+```{r}
+# Load data
+snowsurvey_csv <- read_csv(file.path(datadir_processed, snowsurvey_file))
+```
+
+# Clean Water_cover
+
+```{r}
+# Look for any suspicious values
+snowsurvey_csv %>% 
+  count(Water_cover)
+```
+
+```{r}
+# Look for non-numeric values
+snowsurvey_csv %>% 
+  count(Water_cover) %>%
+  filter(is.na(as.numeric(Water_cover)))
+```
+
+### Standardize NAs
+
+```{r}
+# Turn n/a into NA
+snowsurvey_fixed <- snowsurvey_csv %>% 
+  mutate(Water_cover = ifelse(Water_cover == "n/a", NA, Water_cover))
+```
+
+```{r}
+# Turn 'unk' (unknown) into NA
+snowsurvey_fixed <- snowsurvey_fixed %>% 
+  mutate(Water_cover = ifelse(Water_cover == "unk", NA, Water_cover))
+```
+
+```{r}
+# Check results
+snowsurvey_fixed %>% 
+  count(Water_cover) %>%
+  filter(is.na(as.numeric(Water_cover)))
+```
+
+### Turning Water_cover into a numeric column
+
+Water_cover should be a numeric because it shows percentages, same for land_cover as well. 
+
+```{r}
+# Turn Water_cover into a numeric column
+snowsurvey_fixed <- snowsurvey_fixed %>% 
+  mutate(Water_cover = as.numeric(Water_cover))
+```
+
+### Looking for inappropriate numbers
+If there are values that are greater than 100, they should be removed from the percentage column.
+
+```{r}
+# Looking for values over 100%
+snowsurvey_fixed %>% 
+  filter(Water_cover > 100) 
+```
+
+```{r}
+# Look for values under 0
+snowsurvey_fixed %>% 
+  filter(Water_cover < 0) 
+```
+
+# Clean land_cover
+
+```{r}
+# Look for any suspicious values
+snowsurvey_fixed %>% 
+  count(Land_cover)
+```
+
+
+```{r}
+# Look for non-standardized NAs
+snowsurvey_fixed %>% 
+  count(Land_cover) %>%
+  filter(is.na(as.numeric(Land_cover)))
+```
+### Standardize NAs
+
+```{r}
+# Turn n/a into NA
+snowsurvey_fixed <- snowsurvey_fixed %>% 
+  mutate(Land_cover = ifelse(Land_cover == "n/a", NA, Land_cover))
+```
+
+```{r}
+# Turn 'unk' (unknown) into NA
+snowsurvey_fixed <- snowsurvey_fixed %>% 
+  mutate(Land_cover = ifelse(Land_cover == "unk", NA, Land_cover))
+```
+
+```{r}
+# Check
+snowsurvey_fixed %>% 
+  count(Land_cover) %>%
+  filter(is.na(as.numeric(Land_cover)))
+```
+### Turn land_cover into a numeric 
+
+```{r}
+# Turn Land_cover into a numeric column
+snowsurvey_fixed <- snowsurvey_fixed %>% 
+  mutate(Land_cover = as.numeric(Land_cover))
+```
+
+### Identify outliers greater than 100
+
+```{r}
+# Looking for values over 100%
+snowsurvey_fixed %>% 
+  filter(Land_cover > 100) 
+```
+
+```{r}
+# Looking for values under 0
+snowsurvey_fixed %>% 
+  filter(Land_cover < 0) 
+```
+I decided to remove any negative numbers because a negative percentage does not make sense in this context. 
+
+
+```{r}
+# Removing negative Land_cover values
+snowsurvey_fixed <- snowsurvey_fixed %>% 
+  mutate(Land_cover = ifelse(Land_cover > 100, NA, Land_cover))
+```
+
+### Adding up the percentage points
+Many of the percentage numbers do not add up to 100%. To fix this, I took those rows that do not add up to 100 and reassigned them to be NAs. It would not make sense to keep the values that added up to 100, since we had previously gotten rid of the ones that summed up over 100. The metadata describes the Total_cover variable, noting that it should ALWAYS sum up to 100.
+
+
+```{r}
+# Remove rows that do not add up to 100%
+snowsurvey_clean <- snowsurvey_fixed %>%
+  mutate(
+    Land_cover = ifelse(Land_cover + Water_cover + Snow_cover != 100, NA, Land_cover),
+    Water_cover = ifelse(Land_cover + Water_cover + Snow_cover != 100, NA, Water_cover),
+    Snow_cover = ifelse(Land_cover + Water_cover + Snow_cover != 100, NA, Snow_cover)
+  )
+```
+
+# Save CSV
+
+```{r}
+# Saving changes as csv
+write_csv(snowsurvey_clean, file.path(datadir_processed, "all_cover_fixed_Grazda.csv"))
+```
+
+
