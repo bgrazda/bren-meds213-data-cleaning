@@ -25,7 +25,7 @@ data
 │   ├── ASDN_Daily_species.csv
 └── └── ASDN_Snow_survey
 
-- `all_cover_fixed_LIZPETERSON.csv`: Cleaned snow survey data
+- `all_cover_fixed_Grazda.csv`: Cleaned snow survey data
 - `snow_cover.csv`: Partially cleaned snow cover survey data (only the snow_cover column was cleaned)
 - `species_presence.csv`: Cleaned species data
 - `01_ASDN_Readme.txt`: Original metadata from ASDN
