@@ -14,15 +14,8 @@ Field data on shorebird ecology and environmental conditions were collected from
 
 ## DATA AND FILE OVERVIEW
 The data folder, data/, contains two folders: raw/ and processed/. The structure of the data folder is as follows:
-data/
-├── processed/
-│   ├── all_cover_fixed_Grazda.csv
-│   ├── snow_cover.csv
-│   └── species_presence.csv
-├── raw/
-│   ├── 01_ASDN_Readme.txt
-│   ├── ASDN_Daily_species.csv
-│   └── ASDN_Snow_survey/
+
+<pre> data/ ├── processed/ │ ├── all_cover_fixed_Grazda.csv │ ├── snow_cover.csv │ └── species_presence.csv ├── raw/ │ ├── 01_ASDN_Readme.txt │ ├── ASDN_Daily_species.csv │ └── ASDN_Snow_survey/ </pre>
 
 - `all_cover_fixed_Grazda.csv`: Cleaned snow survey data
 - `snow_cover.csv`: Partially cleaned snow cover survey data (only the snow_cover column was cleaned)
