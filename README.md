@@ -64,7 +64,7 @@ Number of cases/rows: 42830
 Variable List: 
 
 | Column Name	| Definition |
-|Site |	Four-letter code of site at which data were collected |
+| Site |	Four-letter code of site at which data were collected |
 | Year	| Year in which data were collected |
 | Date	| Date on which data were collected |
 | Plot |	Name of study plot on which survey was conducted |
