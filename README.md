@@ -54,11 +54,37 @@ The version of this dataset was created for EDS 213: Databases and Data Manageme
 
 
 
-
+## DATA-SPECIFIC INFORMATION FOR data/processed/all_cover_fixed_Grazda.csv
   
+Number of variables: 11
 
+Number of cases/rows: 42830
 
+Variable List: 
 
+Column Name	Definition
+|Site |	Four-letter code of site at which data were collected |
+| :---: | :---: |
+|Year	| Year in which data were collected |
+| :---: | :---: |
+| Date	| Date on which data were collected |
+| :---: | :---: |
+| Plot |	Name of study plot on which survey was conducted |
+| :---: | :---: |
+| Location |	Name of dedicated snow-survey location, if applicable |
+| :---: | :---: |
+| Snow_cover	| Percent cover of snow, including slush |
+| :---: | :---: |
+| Water_cover |	Percent cover of water |
+| :---: | :---: |
+| Land_cover |	Percent cover of exposed land |
+| :---: | :---: |
+| Total_cover |	Total sum (to check the above percents; should always sum to 100) |
+| :---: | :---: |
+| Observer |	Person who conducted the survey |
+| :---: | :---: |
+| Notes	| Any relevant comments on the survey |
+| :---: | :---: |
 
 
 
